@@ -216,6 +216,7 @@
   shell: df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f \( -perm -4000 -o -perm -2000 \) -print 2>/dev/null
   register: sbit_binaries
   changed_when: false
+  check_mode: no
   when: config_suid_sgid
 
 - name: req-013.2 combine found files with default whitelist
@@ -343,6 +344,7 @@
   shell: awk -F':' '($1!="root" && $1!="sync" && $1!="shutdown" && $1!="halt" && $3<{{ uid_max }} && $7=="/bin/bash") {print $1}' /etc/passwd
   register: check_sys_accounts
   changed_when: false
+  check_mode: no
   when: config_nologin_sys_accounts
 
 - name: req-022.2 disable login for system accounts
@@ -357,6 +359,7 @@
   shell: awk -F":" '($2 == "" && $2 != "!" && $2 !="*") {print $1}' /etc/shadow
   register: user_without_pw
   changed_when: false
+  check_mode: no
   when: config_user_without_pw
 
 - name: req-023.2 lock accounts without password
@@ -375,6 +378,7 @@
   shell: grep "^root:[*\!]:" /etc/shadow
   register: check_root_pw
   changed_when: false
+  check_mode: no
   when: ansible_distribution == "Ubuntu" and
       ( config_single_user_mode and config_root_password )
 

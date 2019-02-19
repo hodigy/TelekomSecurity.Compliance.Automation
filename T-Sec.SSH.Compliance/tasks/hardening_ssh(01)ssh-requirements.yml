@@ -12,6 +12,7 @@
   shell: awk '$5 < {{ moduli_minimum }}' /etc/ssh/moduli
   register: ssh_moduli
   changed_when: false
+  check_mode: no
   when: config_ssh_server
 
 - name: req-002.1 remove all primes smaller than defined value
