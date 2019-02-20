@@ -80,6 +80,7 @@
     line: 'max_log_file = {{ auditd_file_size }}'
     state: present
   when: config_auditd and config_log_rotate
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: req-033.4 check if rotate is enabled for auditd
   lineinfile:
@@ -89,6 +90,7 @@
     state: present
   notify: restart auditd
   when: config_auditd and config_log_rotate
+  ignore_errors: "{{ ansible_check_mode }}"
 
 - name: req-033.5 check if rotate is enabled for auditd
   lineinfile:
@@ -98,6 +100,7 @@
     state: present
   notify: restart auditd
   when: config_auditd and config_log_rotate
+  ignore_errors: "{{ ansible_check_mode }}"
 
 # Req 34:	System events must be logged.
 # Req 35:	Access and Authentication events must be logged.
@@ -131,6 +134,7 @@
   with_items: '{{ priv_commands.stdout_lines }}'
   notify: restart auditd
   when: config_auditd and config_access_events
+  ignore_errors: "{{ ansible_check_mode }}"
 
 # Req 38:	Auditd configuration must be immutable.
 
@@ -141,6 +145,7 @@
     line: '-e 2'
     state: present
   when: config_auditd and config_auditd_immutable
+  ignore_errors: "{{ ansible_check_mode }}"
 
 # Req 39:	Security relevant logging data must be send to an external system direct
 # after their creation.
